@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.db.DbQueries;
 @WebServlet("/SignIn")
 public class SignIn extends HttpServlet {
+	private String hi;
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
