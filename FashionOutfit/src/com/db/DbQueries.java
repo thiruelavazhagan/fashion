@@ -11,7 +11,7 @@ import com.model.UserPojo;
 public class DbQueries {
 
 	public static String registerUser(UserPojo userpojo) {
-		
+		String status="User Already Exists!!.";
 		String fname = userpojo.getFname();
 		String lname = userpojo.getLname();
 		String email = userpojo.getEmail();
@@ -31,30 +31,41 @@ public class DbQueries {
 
 			int i = preparedStatement.executeUpdate();
 
-			if (i != 0) // Just to ensure data has been inserted into the
-				// database
-				return "Registration Successfull!!!";
+			if (i != 0) {
+				status = "Registration Successfull!!!";
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "Oops... Something went wrong there!!."; // On failure, send a
-		// message from here.
+		return status;
 	}
 
-	public static boolean userLogin(String email, String pass) {
-		boolean status = false;
+	public static String userLogin(String email, String pass) {
+		
+		String status = "";
+		String email1="", password="", name="";
 		try {
+			
 			Connection con = null;
 			con = DbConnection.getConnection();
 
 			PreparedStatement ps = con
-					.prepareStatement("select * from register where email=? and pass=?");
+					.prepareStatement("select * from register where email=?");
 			ps.setString(1, email);
-			ps.setString(2, pass);
 
 			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				status = true;
+			while (rs.next()) {
+
+				email1 = rs.getString("email");
+				password = rs.getString("pass");
+				name = rs.getString("fname");
+
+			}if (email.equals(email) && password.equals(pass)) {
+				status = name;
+
+			} else {
+				status = "no";
+
 			}
 
 		} catch (Exception e) {

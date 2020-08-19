@@ -19,22 +19,23 @@ public class SignIn extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-
+		HttpSession session = request.getSession(true);
 		DbQueries dbqueries = new DbQueries();
 		String email = request.getParameter("email");
 		String password = request.getParameter("pass");
 		System.out.println("email"+email+"pass"+password);
-		boolean result = dbqueries.userLogin(email, password);
+		String result = dbqueries.userLogin(email, password);
 		
-		if (result) {
+		if (result!="no") {
 			System.out.println("---------------------->>>>" + result);
 			request.setAttribute("msglog", "Login Successfull");
+			session.setAttribute("result", result);
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 		} else {
 			System.out.println("--------------------");
 			request.setAttribute("msglog", "Invalid email or password");
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 		}
 		out.close();
